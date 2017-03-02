@@ -1,0 +1,8 @@
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\bin\Release\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\bin\Release\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\obj\Release\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\obj\Release\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\bin\Release\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\bin\Release\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\obj\Release\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\obj\Release\Steam4NET.pdb

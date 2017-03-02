@@ -1,0 +1,10 @@
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\bin\Debug\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\bin\Debug\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\obj\Debug\Steam4NET.csprojResolveAssemblyReference.cache
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\obj\Debug\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\open-steamworks-master\Steam4NET2\Steam4NET2\obj\Debug\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\bin\Debug\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\bin\Debug\Steam4NET.pdb
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\obj\Debug\Steam4NET.csprojResolveAssemblyReference.cache
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\obj\Debug\Steam4NET.dll
+D:\Dropbox\SPARA\Develop\HourBoostr\SingleBoostr\Steam4NET2\obj\Debug\Steam4NET.pdb
