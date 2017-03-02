@@ -202,15 +202,7 @@ namespace SteamBulkActivator
 
         private void onPurchaseResponse(PurchaseResponse_t callback)
         {
-            if (callback.m_EResult == EResult.k_EResultOK)
-            {
-                _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(callback.m_EPurchaseResultDetail));
-            }
-            else
-            {
-                _result.AddResult(callback.m_EResult.ToString());
-            }
-
+            _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(callback.m_EPurchaseResultDetail));
             _waitingForActivationResp = false;
         }
 
