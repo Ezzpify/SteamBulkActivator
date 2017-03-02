@@ -235,7 +235,7 @@ namespace SteamBulkActivator
                 if (tempList.Contains(key))
                     continue;
 
-                tempList.Add(key);
+                tempList.Add(key.Trim());
             }
 
             _cdKeyList = tempList;

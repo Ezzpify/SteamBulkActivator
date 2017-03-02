@@ -131,9 +131,9 @@
             // 
             this.panelBtnRegisterWrapper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBtnRegisterWrapper.Controls.Add(this.btnRegister);
-            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(121, 252);
+            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(98, 252);
             this.panelBtnRegisterWrapper.Name = "panelBtnRegisterWrapper";
-            this.panelBtnRegisterWrapper.Size = new System.Drawing.Size(143, 25);
+            this.panelBtnRegisterWrapper.Size = new System.Drawing.Size(180, 25);
             this.panelBtnRegisterWrapper.TabIndex = 17;
             // 
             // btnRegister
@@ -148,9 +148,9 @@
             this.btnRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
             this.btnRegister.Location = new System.Drawing.Point(0, 0);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(143, 25);
+            this.btnRegister.Size = new System.Drawing.Size(180, 25);
             this.btnRegister.TabIndex = 14;
-            this.btnRegister.Text = "CLOSE";
+            this.btnRegister.Text = "CLOSE AND SAVE RESULTS";
             this.btnRegister.UseVisualStyleBackColor = false;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 

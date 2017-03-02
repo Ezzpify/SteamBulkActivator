@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace SteamBulkActivator
@@ -62,6 +64,20 @@ namespace SteamBulkActivator
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
+            var list = new List<string>();
+            foreach (ListViewItem item in keyListView.Items)
+            {
+                string entry = item.Text;
+
+                if (item.SubItems.Count > 1)
+                    entry += $" - {item.SubItems[1].Text}";
+
+                list.Add(entry);
+            }
+
+            string location = Path.Combine(Application.StartupPath, "Results.txt");
+            File.WriteAllText(location, string.Join("\n\r", list));
+            Process.Start(location);
             Close();
         }
 

@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Steam4NET">
-      <HintPath>..\Steam4NET2\bin\Release\Steam4NET.dll</HintPath>
+      <HintPath>.\Steam4NET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
