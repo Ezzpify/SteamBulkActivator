@@ -166,6 +166,7 @@ namespace SteamBulkActivator
             foreach (var pchActivationCode in cdkeys)
             {
                 _clientBilling.PurchaseWithActivationCode(pchActivationCode);
+                Thread.Sleep(2000);
 
                 while (_waitingForActivationResp)
                     Thread.Sleep(100);
