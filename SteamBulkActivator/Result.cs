@@ -16,6 +16,8 @@ namespace SteamBulkActivator
     {
         class KeyResponse
         {
+            public string key { get; set; }
+
             public string response { get; set; }
 
             public bool added { get; set; }
@@ -53,6 +55,14 @@ namespace SteamBulkActivator
             });
         }
 
+        public void Completed()
+        {
+            Invoke(new Action(() =>
+            {
+                panelBtnRegisterWrapper.Visible = true;
+            }));
+        }
+
         private void Result_Load(object sender, EventArgs e)
         {
             foreach (var key in _cdKeyList)
@@ -64,19 +74,13 @@ namespace SteamBulkActivator
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            var list = new List<string>();
-            foreach (ListViewItem item in keyListView.Items)
-            {
-                string entry = item.Text;
+            var sortedList = _cdKeyResponses.OrderBy(o => o.response);
+            string formattedStr = string.Empty;
+            foreach (var item in sortedList)
+                formattedStr += $"{item.key} - {item.response}\n";
 
-                if (item.SubItems.Count > 1)
-                    entry += $" - {item.SubItems[1].Text}";
-
-                list.Add(entry);
-            }
-
-            string location = Path.Combine(Application.StartupPath, "Results.txt");
-            File.WriteAllText(location, string.Join("\n\r", list));
+            string location = Path.Combine(Application.StartupPath, $"Results {Utils.GetTimestamp()}.txt");
+            File.WriteAllText(location, formattedStr.Trim());
             Process.Start(location);
             Close();
         }
@@ -105,12 +109,14 @@ namespace SteamBulkActivator
             for (int i = 0; i < tmpList.Count; i++)
             {
                 string resp = tmpList[i].response;
-
                 if (!string.IsNullOrWhiteSpace(resp) && !tmpList[i].added)
                 {
+                    _cdKeyResponses[i].key = keyListView.Items[i].Text;
                     keyListView.Items[i].SubItems.Add(resp);
                     tmpList[i].added = true;
+
                     autoResizeView();
+                    keyListView.EnsureVisible(i);
                 }
             }
         }

@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panelHeader = new System.Windows.Forms.Panel();
+            this.btnMinimize = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Label();
+            this.linkGithub = new System.Windows.Forms.PictureBox();
             this.panelHeaderDivider3 = new System.Windows.Forms.PictureBox();
             this.panelMain = new System.Windows.Forms.Panel();
             this.panelBtnRegisterWrapper = new System.Windows.Forms.Panel();
@@ -44,10 +47,8 @@
             this.topSpacer = new System.Windows.Forms.PictureBox();
             this.panelLoading = new System.Windows.Forms.Panel();
             this.lblError = new System.Windows.Forms.Label();
-            this.linkGithub = new System.Windows.Forms.PictureBox();
-            this.btnClose = new System.Windows.Forms.Label();
-            this.btnMinimize = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.linkGithub)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelHeaderDivider3)).BeginInit();
             this.panelMain.SuspendLayout();
             this.panelBtnRegisterWrapper.SuspendLayout();
@@ -58,7 +59,6 @@
             this.ContainerKeyCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.topSpacer)).BeginInit();
             this.panelLoading.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.linkGithub)).BeginInit();
             this.SuspendLayout();
             // 
             // panelHeader
@@ -74,6 +74,49 @@
             this.panelHeader.Size = new System.Drawing.Size(269, 25);
             this.panelHeader.TabIndex = 0;
             this.panelHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseDown);
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMinimize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnMinimize.Location = new System.Drawing.Point(214, 0);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(25, 25);
+            this.btnMinimize.TabIndex = 10;
+            this.btnMinimize.Text = "_";
+            this.btnMinimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            this.btnMinimize.MouseEnter += new System.EventHandler(this.btnMinimize_MouseEnter);
+            this.btnMinimize.MouseLeave += new System.EventHandler(this.btnMinimize_MouseLeave);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnClose.Location = new System.Drawing.Point(239, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(25, 25);
+            this.btnClose.TabIndex = 9;
+            this.btnClose.Text = "X";
+            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
+            this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
+            // 
+            // linkGithub
+            // 
+            this.linkGithub.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkGithub.Dock = System.Windows.Forms.DockStyle.Left;
+            this.linkGithub.Image = ((System.Drawing.Image)(resources.GetObject("linkGithub.Image")));
+            this.linkGithub.Location = new System.Drawing.Point(0, 0);
+            this.linkGithub.Name = "linkGithub";
+            this.linkGithub.Size = new System.Drawing.Size(41, 25);
+            this.linkGithub.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.linkGithub.TabIndex = 8;
+            this.linkGithub.TabStop = false;
+            this.linkGithub.Click += new System.EventHandler(this.linkGithub_Click);
             // 
             // panelHeaderDivider3
             // 
@@ -152,11 +195,13 @@
             this.txtKeys.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtKeys.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtKeys.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtKeys.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtKeys.Location = new System.Drawing.Point(18, 0);
+            this.txtKeys.Multiline = true;
             this.txtKeys.Name = "txtKeys";
-            this.txtKeys.Size = new System.Drawing.Size(233, 14);
+            this.txtKeys.Size = new System.Drawing.Size(233, 154);
             this.txtKeys.TabIndex = 15;
+            this.txtKeys.Text = "test";
             this.txtKeys.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtKeys.TextChanged += new System.EventHandler(this.txtKeys_TextChanged);
             this.txtKeys.Enter += new System.EventHandler(this.txtKeys_Enter);
@@ -230,49 +275,6 @@
             this.lblError.Text = "Unable to connect to Steam client ...";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // linkGithub
-            // 
-            this.linkGithub.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.linkGithub.Dock = System.Windows.Forms.DockStyle.Left;
-            this.linkGithub.Image = ((System.Drawing.Image)(resources.GetObject("linkGithub.Image")));
-            this.linkGithub.Location = new System.Drawing.Point(0, 0);
-            this.linkGithub.Name = "linkGithub";
-            this.linkGithub.Size = new System.Drawing.Size(41, 25);
-            this.linkGithub.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.linkGithub.TabIndex = 8;
-            this.linkGithub.TabStop = false;
-            this.linkGithub.Click += new System.EventHandler(this.linkGithub_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnClose.Location = new System.Drawing.Point(239, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(25, 25);
-            this.btnClose.TabIndex = 9;
-            this.btnClose.Text = "X";
-            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
-            this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMinimize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnMinimize.Location = new System.Drawing.Point(214, 0);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(25, 25);
-            this.btnMinimize.TabIndex = 10;
-            this.btnMinimize.Text = "_";
-            this.btnMinimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            this.btnMinimize.MouseEnter += new System.EventHandler(this.btnMinimize_MouseEnter);
-            this.btnMinimize.MouseLeave += new System.EventHandler(this.btnMinimize_MouseLeave);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -289,9 +291,11 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steam Bulk Activator";
+            this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.panelHeader.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.linkGithub)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelHeaderDivider3)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelBtnRegisterWrapper.ResumeLayout(false);
@@ -303,7 +307,6 @@
             this.ContainerKeyCount.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.topSpacer)).EndInit();
             this.panelLoading.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.linkGithub)).EndInit();
             this.ResumeLayout(false);
 
         }

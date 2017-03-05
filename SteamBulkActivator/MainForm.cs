@@ -22,6 +22,7 @@ namespace SteamBulkActivator
         private int _user, _pipe;
         private bool _enableRegexChecking = true;
         private bool _waitingForActivationResp = false;
+        private bool _txtKeysCleared = false;
 
         private ISteam006 _steam006;
         private IClientEngine _clientEngine;
@@ -56,15 +57,15 @@ namespace SteamBulkActivator
                 panelMain.Visible = true;
                 panelLoading.Visible = false;
                 _cdKeyList = new List<string>();
-                this.ActiveControl = lblKeyCount;
-                NativeMethods.SendMessage(txtKeys.Handle, _eM_SETCUEBANNER, IntPtr.Zero, "6EZ77-35QQY-9BTT8");
+                ActiveControl = lblKeyCount;
+                txtKeys.Text = $"Enter your keys here\n\r\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}";
 
                 _callbackBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
                 _callbackBwg.DoWork += _callbacks_DoWork;
                 _callbackBwg.RunWorkerCompleted += _callbacks_RunWorkerCompleted;
                 _callbackBwg.RunWorkerAsync();
 
-                _purchaseBwg = new BackgroundWorker();
+                _purchaseBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
                 _purchaseBwg.DoWork += _purchaseBwg_DoWork;
             }
         }
@@ -109,7 +110,7 @@ namespace SteamBulkActivator
         {
             if (_cdKeyList.Count == 0)
             {
-                if (_enableRegexChecking && !string.IsNullOrWhiteSpace(txtKeys.Text))
+                if (_enableRegexChecking && !string.IsNullOrWhiteSpace(txtKeys.Text) && _txtKeysCleared)
                 {
                     string chk = "No keys passed the validity check. If you are certain that the keys you have inputted"
                         + " are valid, then you can disable the validity check for cd-keys by pressing Yes.";
@@ -137,7 +138,18 @@ namespace SteamBulkActivator
 
         private void txtKeys_Enter(object sender, EventArgs e)
         {
-            txtKeys.Multiline = true;
+            if (!_txtKeysCleared)
+            {
+                _txtKeysCleared = true;
+                txtKeys.Text = string.Empty;
+                txtKeys.ForeColor = Color.FromArgb(223, 233, 233);
+            }
+        }
+
+        private void MainForm_Deactivate(object sender, EventArgs e)
+        {
+            txtKeys.Text = txtKeys.Text.Trim();
+            txtKeys.Text += "\n\r\n\r";
         }
 
         private void btnClose_MouseEnter(object sender, EventArgs e)
@@ -165,12 +177,17 @@ namespace SteamBulkActivator
             var cdkeys = (List<string>)e.Argument;
             foreach (var pchActivationCode in cdkeys)
             {
+                if (_purchaseBwg.CancellationPending)
+                    break;
+
                 _clientBilling.PurchaseWithActivationCode(pchActivationCode);
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
 
                 while (_waitingForActivationResp)
                     Thread.Sleep(100);
             }
+
+            _result.Completed();
         }
 
         private void _callbacks_DoWork(object sender, DoWorkEventArgs e)
@@ -202,8 +219,21 @@ namespace SteamBulkActivator
 
         private void onPurchaseResponse(PurchaseResponse_t callback)
         {
-            _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(callback.m_EPurchaseResultDetail));
-            _waitingForActivationResp = false;
+            int result = callback.m_EPurchaseResultDetail;
+            switch (result)
+            {
+                /*53 equals too many activation attempts*/
+                case 53:
+                    _purchaseBwg.CancelAsync();
+                    _result.Completed();
+                    break;
+
+                default:
+                    _waitingForActivationResp = false;
+                    break;
+            }
+
+            _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(result));
         }
 
         private void txtKeys_TextChanged(object sender, EventArgs e)

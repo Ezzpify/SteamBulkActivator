@@ -131,10 +131,11 @@
             // 
             this.panelBtnRegisterWrapper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBtnRegisterWrapper.Controls.Add(this.btnRegister);
-            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(98, 252);
+            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(105, 250);
             this.panelBtnRegisterWrapper.Name = "panelBtnRegisterWrapper";
             this.panelBtnRegisterWrapper.Size = new System.Drawing.Size(180, 25);
             this.panelBtnRegisterWrapper.TabIndex = 17;
+            this.panelBtnRegisterWrapper.Visible = false;
             // 
             // btnRegister
             // 
