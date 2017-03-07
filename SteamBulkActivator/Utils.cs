@@ -11,7 +11,7 @@ namespace SteamBulkActivator
 
         public static string GetTimestamp()
         {
-            return DateTime.Now.ToString("d-M-yyyy HH-mm-ss");
+            return DateTime.Now.ToString("yyyy-M-d HH-mm-ss");
         }
 
         public static string RandomString(int length)
@@ -28,8 +28,19 @@ namespace SteamBulkActivator
 
         public static bool ValidateCDKey(string pchActivationCode)
         {
-            /*Example match: ABCDE-ABCDE-ABCDE*/
-            return new Regex("([A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5})").IsMatch(pchActivationCode);
+            /*Keys look like the following:
+                AAAAA-BBBBB-CCCCC
+                AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
+                237ABCDGHJLPRST 23*/
+
+            Regex first = new Regex("^([A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5})$");
+            Regex second = new Regex("^([A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5})$");
+            Regex third = new Regex("^([A-Z0-9]{15} [A-Z0-9]{2})$");
+
+            if (first.IsMatch(pchActivationCode) || second.IsMatch(pchActivationCode) || third.IsMatch(pchActivationCode))
+                return true;
+
+            return false;
         }
 
         public static string GetFriendlyEPurchaseResultDetailMsg(int result)

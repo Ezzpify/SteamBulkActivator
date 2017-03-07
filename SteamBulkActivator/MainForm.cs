@@ -130,6 +130,7 @@ namespace SteamBulkActivator
 
                 _result = new Result(_cdKeyList);
                 _result.ShowDialog();
+                txtKeys.Text = string.Empty;
             }
         }
 
@@ -228,7 +229,6 @@ namespace SteamBulkActivator
                     completedRegistration();
                     break;
             }
-
             _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(result));
             _waitingForActivationResp = false;
         }

@@ -54,7 +54,7 @@
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(386, 25);
+            this.panelHeader.Size = new System.Drawing.Size(454, 25);
             this.panelHeader.TabIndex = 1;
             this.panelHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelHeader_MouseDown);
             // 
@@ -67,7 +67,7 @@
             this.ContainerInput.Dock = System.Windows.Forms.DockStyle.Top;
             this.ContainerInput.Location = new System.Drawing.Point(0, 58);
             this.ContainerInput.Name = "ContainerInput";
-            this.ContainerInput.Size = new System.Drawing.Size(386, 175);
+            this.ContainerInput.Size = new System.Drawing.Size(454, 175);
             this.ContainerInput.TabIndex = 14;
             // 
             // keyListView
@@ -82,7 +82,7 @@
             this.keyListView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.keyListView.Location = new System.Drawing.Point(18, 0);
             this.keyListView.Name = "keyListView";
-            this.keyListView.Size = new System.Drawing.Size(350, 175);
+            this.keyListView.Size = new System.Drawing.Size(418, 175);
             this.keyListView.TabIndex = 15;
             this.keyListView.UseCompatibleStateImageBehavior = false;
             this.keyListView.View = System.Windows.Forms.View.Details;
@@ -95,12 +95,12 @@
             // resultHeader
             // 
             this.resultHeader.Text = "Result";
-            this.resultHeader.Width = 192;
+            this.resultHeader.Width = 267;
             // 
             // ContainerInputRightSpacer
             // 
             this.ContainerInputRightSpacer.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ContainerInputRightSpacer.Location = new System.Drawing.Point(368, 0);
+            this.ContainerInputRightSpacer.Location = new System.Drawing.Point(436, 0);
             this.ContainerInputRightSpacer.Name = "ContainerInputRightSpacer";
             this.ContainerInputRightSpacer.Size = new System.Drawing.Size(18, 175);
             this.ContainerInputRightSpacer.TabIndex = 14;
@@ -122,7 +122,7 @@
             this.topSpacer.Dock = System.Windows.Forms.DockStyle.Top;
             this.topSpacer.Location = new System.Drawing.Point(0, 25);
             this.topSpacer.Name = "topSpacer";
-            this.topSpacer.Size = new System.Drawing.Size(386, 33);
+            this.topSpacer.Size = new System.Drawing.Size(454, 33);
             this.topSpacer.TabIndex = 16;
             this.topSpacer.TabStop = false;
             this.topSpacer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topSpacer_MouseDown);
@@ -131,7 +131,7 @@
             // 
             this.panelBtnRegisterWrapper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBtnRegisterWrapper.Controls.Add(this.btnRegister);
-            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(105, 250);
+            this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(137, 248);
             this.panelBtnRegisterWrapper.Name = "panelBtnRegisterWrapper";
             this.panelBtnRegisterWrapper.Size = new System.Drawing.Size(180, 25);
             this.panelBtnRegisterWrapper.TabIndex = 17;
@@ -166,7 +166,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(386, 300);
+            this.ClientSize = new System.Drawing.Size(454, 300);
             this.Controls.Add(this.panelBtnRegisterWrapper);
             this.Controls.Add(this.ContainerInput);
             this.Controls.Add(this.topSpacer);
