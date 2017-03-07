@@ -118,6 +118,9 @@ namespace SteamBulkActivator
                 string resp = _cdKeyResponses[i].response;
                 if (!string.IsNullOrWhiteSpace(resp) && !_cdKeyResponses[i].added)
                 {
+                    if (keyListView.Items.Count < i)
+                        continue;
+
                     _cdKeyResponses[i].key = keyListView.Items[i].Text;
                     _cdKeyResponses[i].added = true;
 
