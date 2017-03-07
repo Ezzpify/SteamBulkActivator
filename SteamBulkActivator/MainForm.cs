@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -63,7 +60,6 @@ namespace SteamBulkActivator
                 _callbackBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
                 _callbackBwg.DoWork += _callbacks_DoWork;
                 _callbackBwg.RunWorkerCompleted += _callbacks_RunWorkerCompleted;
-                _callbackBwg.RunWorkerAsync();
 
                 _purchaseBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
                 _purchaseBwg.DoWork += _purchaseBwg_DoWork;
@@ -129,10 +125,11 @@ namespace SteamBulkActivator
             }
             else
             {
-                _result = new Result(_cdKeyList);
-                _result.Show();
-
                 _purchaseBwg.RunWorkerAsync(_cdKeyList);
+                _callbackBwg.RunWorkerAsync();
+
+                _result = new Result(_cdKeyList);
+                _result.ShowDialog();
             }
         }
 
@@ -174,6 +171,9 @@ namespace SteamBulkActivator
 
         private void _purchaseBwg_DoWork(object sender, DoWorkEventArgs e)
         {
+            while (_result != null && !_result.Visible)
+                Thread.Sleep(100);
+
             var cdkeys = (List<string>)e.Argument;
             foreach (var pchActivationCode in cdkeys)
             {
@@ -187,7 +187,7 @@ namespace SteamBulkActivator
                     Thread.Sleep(100);
             }
 
-            _result.Completed();
+            completedRegistration();
         }
 
         private void _callbacks_DoWork(object sender, DoWorkEventArgs e)
@@ -225,20 +225,23 @@ namespace SteamBulkActivator
                 /*53 equals too many activation attempts*/
                 case 53:
                     _purchaseBwg.CancelAsync();
-                    _result.Completed();
-                    break;
-
-                default:
-                    _waitingForActivationResp = false;
+                    completedRegistration();
                     break;
             }
 
             _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(result));
+            _waitingForActivationResp = false;
         }
 
         private void txtKeys_TextChanged(object sender, EventArgs e)
         {
             addKeysToList();
+        }
+
+        private void completedRegistration()
+        {
+            _callbackBwg.CancelAsync();
+            _result.Completed = true;
         }
 
         private void addKeysToList()

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -22,6 +18,8 @@ namespace SteamBulkActivator
 
             public bool added { get; set; }
         }
+
+        public bool Completed;
 
         private const int HT_CAPTION = 0x2;
         private const int WM_NCLBUTTONDOWN = 0xA1;
@@ -48,6 +46,9 @@ namespace SteamBulkActivator
 
         public void AddResult(string result)
         {
+            if (_cdKeyList.Count() < _cdKeyResponses.Count() + 1)
+                return;
+
             _cdKeyResponses.Add(new KeyResponse()
             {
                 response = result,
@@ -55,32 +56,39 @@ namespace SteamBulkActivator
             });
         }
 
-        public void Completed()
-        {
-            Invoke(new Action(() =>
-            {
-                panelBtnRegisterWrapper.Visible = true;
-            }));
-        }
-
         private void Result_Load(object sender, EventArgs e)
         {
-            foreach (var key in _cdKeyList)
-            {
-                keyListView.Items.Add(key);
-                autoResizeView();
-            }
+            _cdKeyList.ForEach(o => keyListView.Items.Add(o));
+            keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            var sortedList = _cdKeyResponses.OrderBy(o => o.response);
+            /*If we reached too many activation attempts then it will stop
+             trying to register keys. We'll find those keys without a response
+             in the original cdKeyList and add them to the save list with a custom
+             message to make it easier for users to see which keys did not get activated.*/
+            foreach (var key in _cdKeyList)
+            {
+                if (_cdKeyResponses.Any(o => o.key == key))
+                    continue;
+
+                _cdKeyResponses.Add(new KeyResponse()
+                {
+                    key = key,
+                    response = "Not attempted"
+                });
+            }
+            
             string formattedStr = string.Empty;
-            foreach (var item in sortedList)
+            foreach (var item in _cdKeyResponses.OrderBy(o => o.response))
                 formattedStr += $"{item.key} - {item.response}\n";
 
             string location = Path.Combine(Application.StartupPath, $"Results {Utils.GetTimestamp()}.txt");
             File.WriteAllText(location, formattedStr.Trim());
+
+            /*This will open the saved text file with the default text editor.*/
             Process.Start(location);
             Close();
         }
@@ -105,26 +113,24 @@ namespace SteamBulkActivator
 
         private void responseTimer_Tick(object sender, EventArgs e)
         {
-            var tmpList = _cdKeyResponses.ToList();
-            for (int i = 0; i < tmpList.Count; i++)
+            for (int i = 0; i < _cdKeyResponses.Count; i++)
             {
-                string resp = tmpList[i].response;
-                if (!string.IsNullOrWhiteSpace(resp) && !tmpList[i].added)
+                string resp = _cdKeyResponses[i].response;
+                if (!string.IsNullOrWhiteSpace(resp) && !_cdKeyResponses[i].added)
                 {
                     _cdKeyResponses[i].key = keyListView.Items[i].Text;
-                    keyListView.Items[i].SubItems.Add(resp);
-                    tmpList[i].added = true;
+                    _cdKeyResponses[i].added = true;
 
-                    autoResizeView();
+                    keyListView.Items[i].SubItems.Add(resp);
                     keyListView.EnsureVisible(i);
                 }
             }
-        }
 
-        private void autoResizeView()
-        {
-            keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            if (Completed)
+            {
+                panelBtnRegisterWrapper.Visible = true;
+                responseTimer.Stop();
+            }
         }
     }
 }

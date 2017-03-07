@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Steam4NET;
 
@@ -69,7 +66,7 @@ namespace SteamBulkActivator
                     switch (result)
                     {
                         case 53:
-                            return "Too many activation attempts";
+                            return "Too many activation attempts. Try again later.";
 
                         default:
                             return e.ToString();
