@@ -1,6 +1,10 @@
 # SteamBulkActivator
 Activate multiple Steam keys in bulk with no hassle. If you've ever used HumbleBundle or BundleStars then you know *real* pain of having to register the keys one by one manually. With this you can automate it! Wow, 2017!
 
+# Download
+
+https://github.com/Ezzpify/SteamBulkActivator/releases/latest
+
 # Previews
 
 https://www.youtube.com/watch?v=Keg6szhdIc0
