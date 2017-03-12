@@ -104,33 +104,23 @@ namespace SteamBulkActivator
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            if (_cdKeyList.Count == 0)
+            if (!_txtKeysCleared || string.IsNullOrWhiteSpace(txtKeys.Text))
             {
-                if (_enableRegexChecking && !string.IsNullOrWhiteSpace(txtKeys.Text) && _txtKeysCleared)
+                MessageBox.Show("No keys have been entered.", "Error");
+            }
+            else if (_cdKeyList.Count == 0)
+            {
+                string msg = "No valid keys were detected. Do you wish to attempt to register them anyways?";
+                var diagRes = MessageBox.Show(msg, "Information", MessageBoxButtons.YesNo);
+                if (diagRes == DialogResult.Yes)
                 {
-                    string chk = "No keys passed the validity check. If you are certain that the keys you have inputted"
-                        + " are valid, then you can disable the validity check for cd-keys by pressing Yes.";
-
-                    var diagRes = MessageBox.Show(chk, "No valid keys", MessageBoxButtons.YesNo);
-                    if (diagRes == DialogResult.Yes)
-                    {
-                        _enableRegexChecking = false;
-                        addKeysToList();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No keys added.", "Error");
+                    addKeysToList(false);
+                    registerKeys();
                 }
             }
             else
             {
-                _purchaseBwg.RunWorkerAsync(_cdKeyList);
-                _callbackBwg.RunWorkerAsync();
-
-                _result = new Result(_cdKeyList);
-                _result.ShowDialog();
-                txtKeys.Text = string.Empty;
+                registerKeys();
             }
         }
 
@@ -240,13 +230,23 @@ namespace SteamBulkActivator
             _waitingForActivationResp = false;
         }
 
+        private void registerKeys()
+        {
+            _purchaseBwg.RunWorkerAsync(_cdKeyList);
+            _callbackBwg.RunWorkerAsync();
+
+            _result = new Result(_cdKeyList);
+            _result.ShowDialog();
+            txtKeys.Text = string.Empty;
+        }
+
         private void completedRegistration()
         {
             _callbackBwg.CancelAsync();
             _result.Completed = true;
         }
 
-        private void addKeysToList()
+        private void addKeysToList(bool regexCheck = true)
         {
             var tempList = new List<string>();
             string[] lines = txtKeys.Text.Split('\n');
@@ -257,7 +257,7 @@ namespace SteamBulkActivator
                 if (string.IsNullOrWhiteSpace(key))
                     continue;
 
-                if (_enableRegexChecking && !Utils.ValidateCDKey(key))
+                if (regexCheck && !Utils.ValidateCDKey(key))
                     continue;
 
                 if (tempList.Contains(key))
