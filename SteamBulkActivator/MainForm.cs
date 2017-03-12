@@ -55,7 +55,7 @@ namespace SteamBulkActivator
                 panelLoading.Visible = false;
                 _cdKeyList = new List<string>();
                 ActiveControl = lblKeyCount;
-                txtKeys.Text = $"Enter your keys here\n\r\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}\n\r\n\r{Utils.GetRandomCDKey()}";
+                txtKeys.Text = $"Enter your keys here\n\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}";
 
                 _callbackBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
                 _callbackBwg.DoWork += _callbacks_DoWork;
@@ -144,10 +144,17 @@ namespace SteamBulkActivator
             }
         }
 
+        private void txtKeys_TextChanged(object sender, EventArgs e)
+        {
+            addKeysToList();
+        }
+
         private void MainForm_Deactivate(object sender, EventArgs e)
         {
             txtKeys.Text = txtKeys.Text.Trim();
-            txtKeys.Text += "\n\r\n\r";
+            txtKeys.Text += "\n";
+            txtKeys.DeselectAll();
+            txtKeys.SelectionStart = txtKeys.Text.Length;
         }
 
         private void btnClose_MouseEnter(object sender, EventArgs e)
@@ -231,11 +238,6 @@ namespace SteamBulkActivator
             }
             _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(result));
             _waitingForActivationResp = false;
-        }
-
-        private void txtKeys_TextChanged(object sender, EventArgs e)
-        {
-            addKeysToList();
         }
 
         private void completedRegistration()
