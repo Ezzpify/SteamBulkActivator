@@ -1,4 +1,9 @@
 # SteamBulkActivator
+
+[![License](https://img.shields.io/github/license/Ezzpify/SteamBulkActivator.svg?label=License&maxAge=86400)](./LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/Ezzpify/SteamBulkActivator.svg?label=Latest&maxAge=60)](https://github.com/Ezzpify/SteamBulkActivator/releases/latest)
+[![Github Downloads](https://img.shields.io/github/downloads/Ezzpify/SteamBulkActivator/latest/total.svg?label=Downloads&maxAge=60)](https://github.com/Ezzpify/SteamBulkActivator/releases/latest)
+
 Activate multiple Steam keys in bulk with no hassle. If you've ever used HumbleBundle or BundleStars then you know *real* pain of having to register the keys one by one manually. With this you can automate it! Wow, 2017!
 
 # Download
