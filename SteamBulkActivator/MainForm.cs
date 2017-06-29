@@ -253,6 +253,9 @@ namespace SteamBulkActivator
             string cdKeyPattern = @"(\w+\-)+\w+";
             foreach (Match m in Regex.Matches(txtKeys.Text, cdKeyPattern))
             {
+                if (tempList.Contains(m.Value))
+                    continue;
+
                 tempList.Add(m.Value);
             }
             _cdKeyList = tempList;
