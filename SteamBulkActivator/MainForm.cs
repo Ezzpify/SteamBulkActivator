@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Steam4NET;
 
 namespace SteamBulkActivator
@@ -249,23 +250,14 @@ namespace SteamBulkActivator
         private void addKeysToList(bool regexCheck = true)
         {
             var tempList = new List<string>();
-            string[] lines = txtKeys.Text.Split('\n');
-            foreach (var line in lines)
+            string cdKeyPattern = @"(\w+\-)+\w+";
+            foreach (Match m in Regex.Matches(txtKeys.Text, cdKeyPattern))
             {
-                string key = line.Replace("\r", "");
-
-                if (string.IsNullOrWhiteSpace(key))
+                if (tempList.Contains(m.Value))
                     continue;
 
-                if (regexCheck && !Utils.ValidateCDKey(key))
-                    continue;
-
-                if (tempList.Contains(key))
-                    continue;
-
-                tempList.Add(key.Trim());
+                tempList.Add(m.Value);
             }
-
             _cdKeyList = tempList;
             lblKeyCount.Text = $"Valid keys: {_cdKeyList.Count}";
         }
