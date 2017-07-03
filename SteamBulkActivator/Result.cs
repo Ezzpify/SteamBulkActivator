@@ -12,11 +12,11 @@ namespace SteamBulkActivator
     {
         class KeyResponse
         {
-            public string key { get; set; }
+            public string Key { get; set; }
 
-            public string response { get; set; }
+            public string Response { get; set; }
 
-            public bool added { get; set; }
+            public bool Added { get; set; }
         }
 
         public bool Completed;
@@ -51,8 +51,8 @@ namespace SteamBulkActivator
 
             _cdKeyResponses.Add(new KeyResponse()
             {
-                response = result,
-                added = false
+                Response = result,
+                Added = false
             });
         }
 
@@ -63,7 +63,7 @@ namespace SteamBulkActivator
             keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void btnSaveResults_Click(object sender, EventArgs e)
         {
             /*If we reached too many activation attempts then it will stop
              trying to register keys. We'll find those keys without a response
@@ -71,24 +71,40 @@ namespace SteamBulkActivator
              message to make it easier for users to see which keys did not get activated.*/
             foreach (var key in _cdKeyList)
             {
-                if (_cdKeyResponses.Any(o => o.key == key))
+                if (_cdKeyResponses.Any(o => o.Key == key))
                     continue;
 
                 _cdKeyResponses.Add(new KeyResponse()
                 {
-                    key = key,
-                    response = "Not attempted"
+                    Key = key,
+                    Response = "Not attempted"
                 });
             }
-            
-            string formattedStr = string.Empty;
-            foreach (var item in _cdKeyResponses.OrderBy(o => o.response))
-                formattedStr += $"{item.key} - {item.response}\n";
+
+            /*We'll add all keys to a dictionary for easier formatting
+             We start with the responses as keys, and keys as the value list*/
+            var keyDic = new Dictionary<string, List<string>>();
+            foreach (var response in _cdKeyResponses.GroupBy(o => o.Response).Select(o => o.First()))
+                keyDic.Add(response.Response, new List<string>());
+
+            /*Add all the keys to the right reponse type*/
+            foreach (var key in _cdKeyResponses)
+                keyDic[key.Response].Add(key.Key);
+
+            /*Format the final string to write to file*/
+            string finalStr = string.Empty;
+            foreach (var resp in keyDic)
+            {
+                finalStr += resp.Key;
+                foreach (var key in resp.Value)
+                    finalStr += $"\n{key}";
+
+                finalStr += "\n\n";
+            }
 
             string location = Path.Combine(Application.StartupPath, $"Results {Utils.GetTimestamp()}.txt");
-            File.WriteAllText(location, formattedStr.Trim());
+            File.WriteAllText(location, finalStr.Trim());
 
-            /*This will open the saved text file with the default text editor.*/
             Process.Start(location);
             Close();
         }
@@ -115,14 +131,14 @@ namespace SteamBulkActivator
         {
             for (int i = 0; i < _cdKeyResponses.Count; i++)
             {
-                string resp = _cdKeyResponses[i].response;
-                if (!string.IsNullOrWhiteSpace(resp) && !_cdKeyResponses[i].added)
+                string resp = _cdKeyResponses[i].Response;
+                if (!string.IsNullOrWhiteSpace(resp) && !_cdKeyResponses[i].Added)
                 {
                     if (keyListView.Items.Count < i)
                         continue;
 
-                    _cdKeyResponses[i].key = keyListView.Items[i].Text;
-                    _cdKeyResponses[i].added = true;
+                    _cdKeyResponses[i].Key = keyListView.Items[i].Text;
+                    _cdKeyResponses[i].Added = true;
 
                     keyListView.Items[i].SubItems.Add(resp);
                     keyListView.EnsureVisible(i);

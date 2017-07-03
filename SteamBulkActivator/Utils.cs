@@ -26,28 +26,9 @@ namespace SteamBulkActivator
             return $"{RandomString(5)}-{RandomString(5)}-{RandomString(5)}";
         }
 
-        public static bool ValidateCDKey(string pchActivationCode)
+        public static string GetFriendlyEPurchaseResultDetailMsg(EPurchaseResultDetail result)
         {
-            /*Keys look like the following:
-                AAAAA-BBBBB-CCCCC
-                AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
-                237ABCDGHJLPRST 23*/
-
-            Regex first = new Regex("^([A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5})$");
-            Regex second = new Regex("^([A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5})$");
-            Regex third = new Regex("^([A-Z0-9]{15} [A-Z0-9]{2})$");
-
-            if (first.IsMatch(pchActivationCode) || second.IsMatch(pchActivationCode) || third.IsMatch(pchActivationCode))
-                return true;
-
-            return false;
-        }
-
-        public static string GetFriendlyEPurchaseResultDetailMsg(int result)
-        {
-            EPurchaseResultDetail e = (EPurchaseResultDetail)result;
-
-            switch(e)
+            switch(result)
             {
                 case EPurchaseResultDetail.k_EPurchaseResultNoDetail:
                     return "Success";
@@ -73,15 +54,11 @@ namespace SteamBulkActivator
                 case EPurchaseResultDetail.k_EPurchaseResultDoesNotOwnRequiredApp:
                     return "Does not own required app to register this key";
 
-                default:
-                    switch (result)
-                    {
-                        case 53:
-                            return "Too many activation attempts. Try again later.";
+                case EPurchaseResultDetail.k_EPurchaseResultTooManyActivationAttempts:
+                    return "Too many activation attempts. Try again later.";
 
-                        default:
-                            return e.ToString();
-                    }
+                default:
+                    return result.ToString();
             }
         }
     }

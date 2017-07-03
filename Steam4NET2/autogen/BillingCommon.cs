@@ -109,7 +109,8 @@ namespace Steam4NET
 		k_EPurchaseResultWouldExceedMaxWallet = 35,
 		k_EPurchaseResultMustLoginPS3AppForPurchase = 36,
 		k_EPurchaseResultCannotShipToPOBox = 37,
-	};
+        k_EPurchaseResultTooManyActivationAttempts = 53
+    };
 	
 	public enum EPurchaseStatus : int
 	{

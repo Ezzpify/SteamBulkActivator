@@ -18,7 +18,6 @@ namespace SteamBulkActivator
         private const int _eM_SETCUEBANNER = 0x1501;
 
         private int _user, _pipe;
-        private bool _enableRegexChecking = true;
         private bool _waitingForActivationResp = false;
         private bool _txtKeysCleared = false;
 
@@ -218,15 +217,15 @@ namespace SteamBulkActivator
 
         private void onPurchaseResponse(PurchaseResponse_t callback)
         {
-            int result = callback.m_EPurchaseResultDetail;
+            EPurchaseResultDetail result = (EPurchaseResultDetail)callback.m_EPurchaseResultDetail;
             switch (result)
             {
-                /*53 equals too many activation attempts*/
-                case 53:
+                case EPurchaseResultDetail.k_EPurchaseResultTooManyActivationAttempts:
                     _purchaseBwg.CancelAsync();
                     completedRegistration();
                     break;
             }
+
             _result.AddResult(Utils.GetFriendlyEPurchaseResultDetailMsg(result));
             _waitingForActivationResp = false;
         }

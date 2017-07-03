@@ -39,7 +39,7 @@
             this.ContainerInputLeftSpacer = new System.Windows.Forms.PictureBox();
             this.topSpacer = new System.Windows.Forms.PictureBox();
             this.panelBtnRegisterWrapper = new System.Windows.Forms.Panel();
-            this.btnRegister = new System.Windows.Forms.Button();
+            this.btnSaveResults = new System.Windows.Forms.Button();
             this.responseTimer = new System.Windows.Forms.Timer(this.components);
             this.ContainerInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ContainerInputRightSpacer)).BeginInit();
@@ -130,30 +130,30 @@
             // panelBtnRegisterWrapper
             // 
             this.panelBtnRegisterWrapper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelBtnRegisterWrapper.Controls.Add(this.btnRegister);
+            this.panelBtnRegisterWrapper.Controls.Add(this.btnSaveResults);
             this.panelBtnRegisterWrapper.Location = new System.Drawing.Point(137, 248);
             this.panelBtnRegisterWrapper.Name = "panelBtnRegisterWrapper";
             this.panelBtnRegisterWrapper.Size = new System.Drawing.Size(180, 25);
             this.panelBtnRegisterWrapper.TabIndex = 17;
             this.panelBtnRegisterWrapper.Visible = false;
             // 
-            // btnRegister
+            // btnSaveResults
             // 
-            this.btnRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(168)))), ((int)(((byte)(199)))));
-            this.btnRegister.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRegister.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRegister.FlatAppearance.BorderSize = 0;
-            this.btnRegister.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(190)))), ((int)(((byte)(224)))));
-            this.btnRegister.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(190)))), ((int)(((byte)(224)))));
-            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
-            this.btnRegister.Location = new System.Drawing.Point(0, 0);
-            this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(180, 25);
-            this.btnRegister.TabIndex = 14;
-            this.btnRegister.Text = "CLOSE AND SAVE RESULTS";
-            this.btnRegister.UseVisualStyleBackColor = false;
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            this.btnSaveResults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(168)))), ((int)(((byte)(199)))));
+            this.btnSaveResults.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSaveResults.FlatAppearance.BorderSize = 0;
+            this.btnSaveResults.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(190)))), ((int)(((byte)(224)))));
+            this.btnSaveResults.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(190)))), ((int)(((byte)(224)))));
+            this.btnSaveResults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveResults.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.btnSaveResults.Location = new System.Drawing.Point(0, 0);
+            this.btnSaveResults.Name = "btnSaveResults";
+            this.btnSaveResults.Size = new System.Drawing.Size(180, 25);
+            this.btnSaveResults.TabIndex = 14;
+            this.btnSaveResults.Text = "CLOSE AND SAVE RESULTS";
+            this.btnSaveResults.UseVisualStyleBackColor = false;
+            this.btnSaveResults.Click += new System.EventHandler(this.btnSaveResults_Click);
             // 
             // responseTimer
             // 
@@ -197,7 +197,7 @@
         private System.Windows.Forms.ColumnHeader keyHeader;
         private System.Windows.Forms.ColumnHeader resultHeader;
         private System.Windows.Forms.Panel panelBtnRegisterWrapper;
-        private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.Button btnSaveResults;
         private System.Windows.Forms.Timer responseTimer;
     }
 }
