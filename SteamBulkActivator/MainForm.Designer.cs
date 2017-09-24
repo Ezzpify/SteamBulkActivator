@@ -39,6 +39,7 @@
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnRegisterIcon = new System.Windows.Forms.PictureBox();
             this.ContainerInput = new System.Windows.Forms.Panel();
+            this.txtKeys = new System.Windows.Forms.RichTextBox();
             this.ContainerInputRightSpacer = new System.Windows.Forms.PictureBox();
             this.ContainerInputLeftSpacer = new System.Windows.Forms.PictureBox();
             this.ContainerKeyCount = new System.Windows.Forms.Panel();
@@ -46,7 +47,6 @@
             this.topSpacer = new System.Windows.Forms.PictureBox();
             this.panelLoading = new System.Windows.Forms.Panel();
             this.lblError = new System.Windows.Forms.Label();
-            this.txtKeys = new System.Windows.Forms.RichTextBox();
             this.panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.linkGithub)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelHeaderDivider3)).BeginInit();
@@ -189,6 +189,20 @@
             this.ContainerInput.Size = new System.Drawing.Size(269, 154);
             this.ContainerInput.TabIndex = 13;
             // 
+            // txtKeys
+            // 
+            this.txtKeys.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.txtKeys.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtKeys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtKeys.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtKeys.Location = new System.Drawing.Point(50, 0);
+            this.txtKeys.Name = "txtKeys";
+            this.txtKeys.Size = new System.Drawing.Size(169, 154);
+            this.txtKeys.TabIndex = 15;
+            this.txtKeys.Text = "";
+            this.txtKeys.TextChanged += new System.EventHandler(this.txtKeys_TextChanged);
+            this.txtKeys.Enter += new System.EventHandler(this.txtKeys_Enter);
+            // 
             // ContainerInputRightSpacer
             // 
             this.ContainerInputRightSpacer.Dock = System.Windows.Forms.DockStyle.Right;
@@ -257,20 +271,6 @@
             this.lblError.TabIndex = 0;
             this.lblError.Text = "Unable to connect to Steam client ...";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtKeys
-            // 
-            this.txtKeys.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.txtKeys.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtKeys.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtKeys.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtKeys.Location = new System.Drawing.Point(50, 0);
-            this.txtKeys.Name = "txtKeys";
-            this.txtKeys.Size = new System.Drawing.Size(169, 154);
-            this.txtKeys.TabIndex = 15;
-            this.txtKeys.Text = "";
-            this.txtKeys.TextChanged += new System.EventHandler(this.txtKeys_TextChanged);
-            this.txtKeys.Enter += new System.EventHandler(this.txtKeys_Enter);
             // 
             // MainForm
             // 
