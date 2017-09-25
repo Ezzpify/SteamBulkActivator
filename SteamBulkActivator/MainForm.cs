@@ -249,7 +249,7 @@ namespace SteamBulkActivator
         private void addKeysToList(bool regexCheck = true)
         {
             var tempList = new List<string>();
-            string cdKeyPattern = @"(\w+\-)+\w+";
+            string cdKeyPattern = @"([A-Za-z0-9]+)-([A-Za-z0-9]+)-([A-Za-z0-9]+)";
             foreach (Match m in Regex.Matches(txtKeys.Text, cdKeyPattern))
             {
                 if (tempList.Contains(m.Value))
