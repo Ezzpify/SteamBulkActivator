@@ -371,8 +371,8 @@ namespace SteamBulkActivator
             switch (result)
             {
                 case EPurchaseResultDetail.k_EPurchaseResultTooManyActivationAttempts:
-                    //_purchaseBwg.CancelAsync();
-                    //completedRegistration();
+                    _purchaseBwg.CancelAsync();
+                    completedRegistration();
                     break;
             }
 
