@@ -18,18 +18,25 @@ namespace SteamBulkActivator
         private const int _eM_SETCUEBANNER = 0x1501;
 
         private int _user, _pipe;
+        private int _registerDelay;
         private bool _waitingForActivationResp = false;
         private bool _txtKeysCleared = false;
 
         private ISteam006 _steam006;
+        private IClientUser _clientUser;
         private IClientEngine _clientEngine;
         private IClientBilling _clientBilling;
         private ISteamClient012 _steamClient012;
 
-        private Result _result;
+        private ResultForm _result;
         private List<string> _cdKeyList;
         private BackgroundWorker _callbackBwg;
         private BackgroundWorker _purchaseBwg;
+
+        private Color _buttonBackgroundNormal = Color.FromArgb(36, 41, 45);
+        private Color _buttonBackgroundHover = Color.FromArgb(15, 174, 220);
+
+        private BrowserForm _browserForm;
 
         protected override CreateParams CreateParams
         {
@@ -47,14 +54,50 @@ namespace SteamBulkActivator
             InitializeComponent();
         }
 
+        private void tmr_Update_Tick(object sender, EventArgs e)
+        {
+            tmr_Update.Stop();
+
+            var uc = new UpdateCheck();
+            var data = uc.GetVersionData(Const.UPDATE_URL);
+
+            if (data != null && data.UpdateAvailable)
+            {
+                var diagRes = MessageBox.Show($"Release notes:\n----------------\n{data.Info}\n\nWould you like to check it out?",
+                    "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (diagRes == DialogResult.Yes)
+                {
+                    Process.Start(Const.RELEASE_URL);
+                }
+            }
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             if (connectToSteam())
             {
+                while (!_clientUser.BLoggedOn())
+                {
+                    var diagRes = MessageBox.Show("Not logged on Steam.", "Steam Bulk Activator", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    if (diagRes == DialogResult.Cancel)
+                    {
+                        Environment.Exit(1);
+                    }
+                    else
+                    {
+                        if (!connectToSteam())
+                        {
+                            MessageBox.Show("Unable to connect to Steam.", "Fatal error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Environment.Exit(1);
+                        }
+                    }
+                }
+
                 panelMain.Visible = true;
                 panelLoading.Visible = false;
+
                 _cdKeyList = new List<string>();
-                ActiveControl = lblKeyCount;
+                ActiveControl = lbl_KeyCount;
                 txtKeys.Text = $"Enter your keys here\n\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}\n{Utils.GetRandomCDKey()}";
 
                 _callbackBwg = new BackgroundWorker() { WorkerSupportsCancellation = true };
@@ -75,6 +118,24 @@ namespace SteamBulkActivator
             }
         }
 
+        private void topSpacer_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                NativeMethods.ReleaseCapture();
+                NativeMethods.SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void pic_MoveForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                NativeMethods.ReleaseCapture();
+                NativeMethods.SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -84,29 +145,34 @@ namespace SteamBulkActivator
             }
         }
 
-        private void linkGithub_Click(object sender, EventArgs e)
+        private void btn_Github_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/Ezzpify");
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btn_Close_Click(object sender, EventArgs e)
         {
-            if (_callbackBwg.IsBusy)
-                _callbackBwg.CancelAsync();
-
             Environment.Exit(1);
         }
 
-        private void btnMinimize_Click(object sender, EventArgs e)
+        private void btn_Min_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
         }
 
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void btn_Scrape_Click(object sender, EventArgs e)
+        {
+            if (_browserForm == null)
+                _browserForm = new BrowserForm();
+
+            _browserForm.ShowDialog();
+        }
+
+        private void btn_Register_Click(object sender, EventArgs e)
         {
             if (!_txtKeysCleared || string.IsNullOrWhiteSpace(txtKeys.Text))
             {
-                MessageBox.Show("No keys have been entered.", "Error");
+                MessageBox.Show("No keys have been entered.", "No keys", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (_cdKeyList.Count == 0)
             {
@@ -145,26 +211,103 @@ namespace SteamBulkActivator
             txtKeys.Text += "\n";
             txtKeys.DeselectAll();
             txtKeys.SelectionStart = txtKeys.Text.Length;
+
+            ActiveControl = panelHeader;
         }
 
-        private void btnClose_MouseEnter(object sender, EventArgs e)
+        private void MainForm_Activated(object sender, EventArgs e)
         {
-            btnClose.ForeColor = Color.FromArgb(255, 255, 255);
+            if (_txtKeysCleared)
+            {
+                ActiveControl = txtKeys;
+            }
         }
 
-        private void btnClose_MouseLeave(object sender, EventArgs e)
+        private void btn_Close_MouseEnter(object sender, EventArgs e)
         {
-            btnClose.ForeColor = Color.FromArgb(224, 224, 224);
+            btn_Close.Image = Properties.Resources.close_bg_hover;
         }
 
-        private void btnMinimize_MouseEnter(object sender, EventArgs e)
+        private void btn_Close_MouseLeave(object sender, EventArgs e)
         {
-            btnMinimize.ForeColor = Color.FromArgb(255, 255, 255);
+            btn_Close.Image = Properties.Resources.close_bg;
         }
 
-        private void btnMinimize_MouseLeave(object sender, EventArgs e)
+        private void btn_Min_MouseEnter(object sender, EventArgs e)
         {
-            btnMinimize.ForeColor = Color.FromArgb(224, 224, 224);
+            btn_Min.Image = Properties.Resources.min_bg_hover;
+        }
+
+        private void btn_Min_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Min.Image = Properties.Resources.min_bg;
+        }
+
+        private void btn_Github_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Github.BackColor = _buttonBackgroundHover;
+        }
+
+        private void btn_Github_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Github.BackColor = _buttonBackgroundNormal;
+        }
+
+        private void btn_Donate_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Donate.BackColor = _buttonBackgroundHover;
+            panelDonate.Visible = true;
+        }
+
+        private void btn_Donate_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Donate.BackColor = _buttonBackgroundNormal;
+
+            if (!panelContainsMouse(panelDonate))
+                panelDonate.Visible = false;
+        }
+
+        private void panelDonate_MouseLeave(object sender, EventArgs e)
+        {
+            panelDonate.Visible = false;
+        }
+
+        private void btn_Paypal_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Paypal.BackColor = _buttonBackgroundHover;
+        }
+
+        private void btn_Paypal_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Paypal.BackColor = _buttonBackgroundNormal;
+
+            if (!panelContainsMouse(panelDonate))
+                panelDonate.Visible = false;
+        }
+
+        private void btn_Bitcoin_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Bitcoin.BackColor = _buttonBackgroundHover;
+        }
+
+        private void btn_Bitcoin_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Bitcoin.BackColor = _buttonBackgroundNormal;
+
+            if (!panelContainsMouse(panelDonate))
+                panelDonate.Visible = false;
+        }
+
+        private void panelDonateBottomSpacer_MouseLeave(object sender, EventArgs e)
+        {
+            if (!panelContainsMouse(panelDonate))
+                panelDonate.Visible = false;
+        }
+
+        private void panelDonateTopSpacer_MouseLeave(object sender, EventArgs e)
+        {
+            if (!panelContainsMouse(panelDonate))
+                panelDonate.Visible = false;
         }
 
         private void _purchaseBwg_DoWork(object sender, DoWorkEventArgs e)
@@ -173,16 +316,23 @@ namespace SteamBulkActivator
                 Thread.Sleep(100);
 
             var cdkeys = (List<string>)e.Argument;
-            foreach (var pchActivationCode in cdkeys)
+            for (int i = 0; i < cdkeys.Count; i++)
             {
                 if (_purchaseBwg.CancellationPending)
                     break;
 
+                _waitingForActivationResp = true;
+                string pchActivationCode = cdkeys[i];
                 _clientBilling.PurchaseWithActivationCode(pchActivationCode);
-                Thread.Sleep(1000);
+
+                if (i + 1 < cdkeys.Count)
+                {
+                    if (_registerDelay != 0)
+                        Thread.Sleep(_registerDelay);
+                }
 
                 while (_waitingForActivationResp)
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
             }
 
             completedRegistration();
@@ -221,8 +371,8 @@ namespace SteamBulkActivator
             switch (result)
             {
                 case EPurchaseResultDetail.k_EPurchaseResultTooManyActivationAttempts:
-                    _purchaseBwg.CancelAsync();
-                    completedRegistration();
+                    //_purchaseBwg.CancelAsync();
+                    //completedRegistration();
                     break;
             }
 
@@ -232,10 +382,12 @@ namespace SteamBulkActivator
 
         private void registerKeys()
         {
+            _registerDelay = (int)num_RegDelay.Value;
+
             _purchaseBwg.RunWorkerAsync(_cdKeyList);
             _callbackBwg.RunWorkerAsync();
 
-            _result = new Result(_cdKeyList);
+            _result = new ResultForm(_cdKeyList, _registerDelay);
             _result.ShowDialog();
             txtKeys.Text = string.Empty;
         }
@@ -248,8 +400,11 @@ namespace SteamBulkActivator
 
         private void addKeysToList(bool regexCheck = true)
         {
+            if (!_txtKeysCleared)
+                return;
+
             var tempList = new List<string>();
-            string cdKeyPattern = @"(\w+\-)+\w+";
+            string cdKeyPattern = @"([A-Za-z0-9]+)(-([A-Za-z0-9]+)){2,}";
             foreach (Match m in Regex.Matches(txtKeys.Text, cdKeyPattern))
             {
                 if (tempList.Contains(m.Value))
@@ -258,7 +413,53 @@ namespace SteamBulkActivator
                 tempList.Add(m.Value);
             }
             _cdKeyList = tempList;
-            lblKeyCount.Text = $"Valid keys: {_cdKeyList.Count}";
+            lbl_KeyCount.Text = $"Valid keys: {_cdKeyList.Count}";
+        }
+
+        private bool panelContainsMouse(Panel panel)
+        {
+            return panelDonate.ClientRectangle.Contains(panelDonate.PointToClient(Cursor.Position));
+        }
+
+        private void btn_Paypal_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.paypal.me/ezzpify");
+            panelDonate.Visible = false;
+            ShowLoveGif();
+        }
+
+        private void ShowLoveGif()
+        {
+            pic_MoveForm.Image = Properties.Resources.heart_animation_ps;
+            tmr_LoveAnimation.Stop();
+            tmr_LoveAnimation.Start();
+        }
+
+        private void tmr_LoveAnimation_Tick(object sender, EventArgs e)
+        {
+            tmr_LoveAnimation.Stop();
+            pic_MoveForm.Image = null;
+        }
+
+        private void btn_Bitcoin_Click(object sender, EventArgs e)
+        {
+            panelBitcoin.Visible = true;
+            panelDonate.Visible = false;
+
+            txt_BitcoinAddress.SelectAll();
+            txt_BitcoinAddress.Focus();
+            ShowLoveGif();
+        }
+
+        private void panelBitcoin_MouseLeave(object sender, EventArgs e)
+        {
+            if (!panelBitcoin.ClientRectangle.Contains(panelBitcoin.PointToClient(Cursor.Position)))
+                panelBitcoin.Visible = false;
+        }
+
+        private void panelBitcoinBottomSpacer_MouseLeave(object sender, EventArgs e)
+        {
+            panelBitcoin.Visible = false;
         }
 
         private bool connectToSteam()
@@ -274,7 +475,7 @@ namespace SteamBulkActivator
             _steam006 = Steamworks.CreateSteamInterface<ISteam006>();
             if (_steam006.Startup(0, ref steamError) == 0)
             {
-                lblError.Text = "Steam startup failed.";
+                lblError.Text = "Steam startup failed. Is Steam running?";
                 return false;
             }
 
@@ -284,7 +485,7 @@ namespace SteamBulkActivator
             _pipe = _steamClient012.CreateSteamPipe();
             if (_pipe == 0)
             {
-                lblError.Text = "Failed to create a pipe.";
+                lblError.Text = "Failed to create user pipe.";
                 return false;
             }
 
@@ -296,6 +497,7 @@ namespace SteamBulkActivator
             }
             
             _clientBilling = _clientEngine.GetIClientBilling<IClientBilling>(_user, _pipe);
+            _clientUser = _clientEngine.GetIClientUser<IClientUser>(_user, _pipe);
             return true;
         }
     }

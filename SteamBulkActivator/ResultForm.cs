@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace SteamBulkActivator
 {
-    public partial class Result : Form
+    public partial class ResultForm : Form
     {
         class KeyResponse
         {
@@ -27,6 +27,9 @@ namespace SteamBulkActivator
         private List<string> _cdKeyList;
         private List<KeyResponse> _cdKeyResponses = new List<KeyResponse>();
 
+        private int _registerDelay;
+        private int _registerDelayFull;
+
         protected override CreateParams CreateParams
         {
             get
@@ -38,14 +41,21 @@ namespace SteamBulkActivator
             }
         }
 
-        public Result(List<string> keys)
+        public ResultForm(List<string> keys, int registerDelay)
         {
             InitializeComponent();
+
+            _registerDelayFull = registerDelay;
+            _registerDelay = registerDelay;
             _cdKeyList = keys;
+
+            tmr_NextResult.Start();
         }
 
         public void AddResult(string result)
         {
+            _registerDelay = _registerDelayFull;
+
             if (_cdKeyList.Count() < _cdKeyResponses.Count() + 1)
                 return;
 
@@ -63,7 +73,7 @@ namespace SteamBulkActivator
             keyListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        private void btnSaveResults_Click(object sender, EventArgs e)
+        private void btn_Save_Click(object sender, EventArgs e)
         {
             /*If we reached too many activation attempts then it will stop
              trying to register keys. We'll find those keys without a response
@@ -118,7 +128,7 @@ namespace SteamBulkActivator
             }
         }
 
-        private void topSpacer_MouseDown(object sender, MouseEventArgs e)
+        private void panelControlHeader_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -147,8 +157,35 @@ namespace SteamBulkActivator
 
             if (Completed)
             {
-                panelBtnRegisterWrapper.Visible = true;
+                btn_Save.Visible = true;
+                lbl_NextResult.Visible = false;
+                tmr_NextResult.Stop();
                 responseTimer.Stop();
+            }
+        }
+
+        private void btn_Min_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void btn_Min_MouseEnter(object sender, EventArgs e)
+        {
+            btn_Min.Image = Properties.Resources.min_bg_hover;
+        }
+
+        private void btn_Min_MouseLeave(object sender, EventArgs e)
+        {
+            btn_Min.Image = Properties.Resources.min_bg;
+        }
+
+        private void tmr_NextResult_Tick(object sender, EventArgs e)
+        {
+            _registerDelay = _registerDelay - tmr_NextResult.Interval;
+            if (_registerDelay > 0)
+            {
+                var ts = TimeSpan.FromMilliseconds(_registerDelay);
+                lbl_NextResult.Text = $"Next result in {new DateTime(ts.Ticks).ToString("HH:mm:ss.f")}";
             }
         }
     }

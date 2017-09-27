@@ -1,0 +1,12 @@
+Adobe After Effects v13.5 Windows 64 render log for project “heart_anim.aep”
+
+Rendering started on 9/27/2017 at 3:48:34 PM
+
+  9/27/2017 3:48:34 PM: Starting composition “Comp 1”.
+
+  Output To: D:\Dropbox\Hookapp\SourceTree\SteamBulkActivator\Media\heart_anim\Comp 1\Comp 1_[#####].png    9/27/2017 3:48:34 PM: Finished composition “Comp 1”.
+
+
+  Total Time Elapsed: 0 Seconds
+Log closed on 9/27/2017 at 3:48:34 PM
+
