@@ -20,6 +20,7 @@ https://www.youtube.com/watch?v=Keg6szhdIc0
 
 * **How many keys can you activate at once?**
  * The Steam limit is around 40ish keys per hour(?). I haven't really had enough keys at once to confirm this. Feel free to let me know if you've tested more. 10 incorrect keys will trigger an early cooldown.
+ * (Proposed Edit) The Steam limit is 50 games per hour. {[I bought a couple massive Fanatical Bundles totalling 66 games and it stopped activating after 50.]}
  
 * **How can I trust this program?**
  * The program and all dependencies are Open Source. This means that the source code (the blueprints) of the program are open to the public to read and modify. This means that you can read through it and compile your own version to ensure that there is no malicious code present.
